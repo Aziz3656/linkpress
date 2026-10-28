@@ -40,7 +40,6 @@ android {
             pickFirsts += listOf("**/libc++_shared.so")
         }
     }
-    }
 
     buildTypes {
         release {
