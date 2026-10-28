@@ -1,0 +1,48 @@
+# Builds the Android app on every push to main and publishes the APKs on the Releases page.
+name: Android APK
+
+on:
+  push:
+    branches: [main]
+    paths: ['mobile/**', '.github/workflows/android-apk.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter build apk --release
+      - run: |
+          mkdir -p out
+          cp build/app/outputs/flutter-apk/app-release.apk out/LinkPress.apk
+          cd out && zip LinkPress-Android.zip LinkPress.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linkpress-android
+          path: mobile/out/*
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-${{ github.run_number }}
+          name: LinkPress for Android (build ${{ github.run_number }})
+          body: Open LinkPress.apk on your Samsung phone and tap Install.
+          files: |
+            mobile/out/LinkPress.apk
+            mobile/out/LinkPress-Android.zip

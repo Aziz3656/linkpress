@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:" />
+  <title>LinkPress</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app-container">
+  <header class="window-titlebar">
+    <div class="window-title"><span class="logo-dot"></span>LinkPress · Downloader &amp; Compressor</div>
+    <div class="window-controls">
+      <button class="win-btn" id="win-min" title="Minimize" aria-label="Minimize"><svg viewBox="0 0 10 10"><path d="M1 5h8"/></svg></button>
+      <button class="win-btn" id="win-max" title="Maximize" aria-label="Maximize"><svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7"/></svg></button>
+      <button class="win-btn win-close" id="win-close" title="Close" aria-label="Close"><svg viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7"/></svg></button>
+    </div>
+  </header>
+
+  <main class="main-content" id="drop-target">
+    <section class="bento-card span-8" data-num="01">
+      <div>
+        <h2>Paste links</h2>
+        <p class="card-sub">One link per line. Any site yt-dlp supports, playlists included.</p>
+        <textarea id="url-input" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://vimeo.com/…"></textarea>
+      </div>
+      <div class="row gap">
+        <button class="btn-primary" id="add-urls">Add to queue</button>
+        <button class="btn-ghost" id="paste">Paste from clipboard</button>
+        <span class="spacer"></span>
+        <button class="btn-ghost" id="import-files">Import videos…</button>
+      </div>
+    </section>
+
+    <section class="bento-card span-4" data-num="02">
+      <div>
+        <h2>Target resolution</h2>
+        <p class="card-sub">Applies to new items and to selected items in the queue.</p>
+        <div class="segmented" id="targets" role="radiogroup"></div>
+      </div>
+      <div id="target-hint"></div>
+    </section>
+
+    <section class="bento-card span-4" data-num="03">
+      <div>
+        <h3>Estimated savings</h3>
+        <div class="highlight-metric" id="m-saving">—</div>
+        <p class="metric-sub" id="m-saving-sub">Add videos to see the size estimate</p>
+      </div>
+    </section>
+
+    <section class="bento-card span-4" data-num="04">
+      <div>
+        <h3>Batch progress</h3>
+        <div class="highlight-metric" id="m-progress">0 / 0</div>
+        <div class="bar big"><div class="bar-fill" id="m-progress-bar"></div></div>
+        <p class="metric-sub" id="m-progress-sub">Queue is empty</p>
+      </div>
+    </section>
+
+    <section class="bento-card span-4" data-num="05">
+      <div>
+        <h3>Output folder</h3>
+        <p class="path highlight-mint" id="output-dir" title=""></p>
+      </div>
+      <div class="row gap">
+        <button class="btn-primary" id="open-output">Open output folder</button>
+        <button class="btn-ghost" id="change-output">Change…</button>
+      </div>
+    </section>
+
+    <section class="bento-card span-12 queue-card" data-num="06">
+      <div class="row queue-head">
+        <h2>Queue</h2>
+        <label class="check"><input type="checkbox" id="select-all" /> <span>Select all</span></label>
+        <span class="spacer"></span>
+        <label class="inline-label">Parallel jobs
+          <select id="concurrency"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+        </label>
+        <button class="btn-ghost" id="clear-finished">Clear finished</button>
+        <button class="btn-ghost" id="remove-selected">Remove selected</button>
+        <button class="btn-primary" id="start">Start</button>
+      </div>
+      <div class="queue-cols">
+        <span></span><span>Video</span><span>Source → Target</span><span>Size estimate</span><span>Progress</span><span></span>
+      </div>
+      <div id="queue" class="queue-list"></div>
+      <div id="empty" class="empty">
+        <p>Drop video files anywhere in this window, or paste links above.</p>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="drop-overlay" class="drop-overlay"><div>Drop videos to add them</div></div>
+<script src="app.js"></script>
+</body>
+</html>
