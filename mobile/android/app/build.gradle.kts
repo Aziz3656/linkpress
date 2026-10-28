@@ -40,15 +40,6 @@ android {
             pickFirsts += listOf("**/libc++_shared.so")
         }
     }
-
-    splits {
-        abi {
-            // One small APK per CPU type in addition to the universal one.
-            isEnable = true
-            reset()
-            include("arm64-v8a", "armeabi-v7a")
-            isUniversalApk = true
-        }
     }
 
     buildTypes {
